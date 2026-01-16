@@ -1,6 +1,8 @@
 .idea/
+.run
 .vscode/
 .DS_Store/
+*.swp
 
 volumes/*
 !volumes/.gitkeep
@@ -9,3 +11,10 @@ docker/traefik/certs/*
 !docker/traefik/certs/.gitkeep
 
 .env.local
+
+node_modules/
+vendor/
+var/
+volumes/
+data/
+
