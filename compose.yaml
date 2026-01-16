@@ -1,12 +1,11 @@
 networks:
   default:
     name: ${COMPOSE_PROJECT_NAME}-traefik-network
-    external: true
 
 services:
   traefik:
-    image: traefik:v3
-    container_name: ${COMPOSE_PROJECT_NAME}.traefik
+    image: traefik:3.6.7
+    container_name: ${COMPOSE_PROJECT_NAME}.traefik.main
     hostname: ${COMPOSE_PROJECT_NAME}.hostname
     ports:
       - target: 80
@@ -20,17 +19,17 @@ services:
     environment:
       TZ: ${TZ}
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.traefik.rule=Host(`traefik.ziferrot.com`)
-      - traefik.http.routers.traefik.entryPoints=https
-      - traefik.http.routers.traefik.middlewares=authentik
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.ziferrot.com`)"
+      - "traefik.http.routers.traefik.entryPoints=https"
+      - "traefik.http.routers.traefik.middlewares=authentik"
       #- traefik.http.routers.traefik.service=traefik
-      - traefik.http.routers.traefik.service=api@internal
-      - traefik.http.services.traefik.loadbalancer.server.port=8443
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./docker/certs:/certificates
-      - ./docker/configs:/configs:ro
+      - ./docker/traefik/configs:/configs
+      - ./docker/traefik/certs:/certificates
     command:
       - --log.level=INFO
       - --api=true

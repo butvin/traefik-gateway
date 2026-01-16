@@ -11,18 +11,18 @@ endif
 
 
 
-APP=${COMPOSE_PROJECT_NAME}.traefik
+APP=${COMPOSE_PROJECT_NAME}.traefik.main
 USER=www-data
 
 
 
 # Docker:
 logs:
-	@docker compose logs -f --tail 24
+	docker --log-level debug compose logs -f --tail 24
 up:
-	@docker compose up -d --force-recreate
+	docker --log-level debug compose up -d --force-recreate
 ps:
-	@docker compose ps
+	docker --log-level debug compose ps
 restart:
 	@docker compose restart
 stop:
@@ -38,25 +38,25 @@ top:
 kill:
 	@docker compose kill
 ls:
-	@docker compose ls -a
-
+	docker --log-level debug compose ls -a
 
 
 
 re-fresh: clean fresh
 clean:
-	docker -D compose down -v --rmi local --remove-orphans
+	docker --log-level debug compose down -v --rmi all --remove-orphans
 fresh:
-	docker -D compose build --no-cache --progress=plain
-	docker -D compose up -d --force-recreate
-
+	docker --log-level debug compose build --no-cache --pull
+	docker --log-level debug compose up -d --force-recreate
 
 
 
 add-docker-network:
 	docker network create ${COMPOSE_PROJECT_NAME}-traefik-network
-
-
+remove-docker-network:
+	docker network rm ${COMPOSE_PROJECT_NAME}-traefik-network
+ls-docker-network:
+	docker network ls --format table --no-trunc
 
 
 
