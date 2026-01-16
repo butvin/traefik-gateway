@@ -54,4 +54,4 @@ services:
       - default
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    restart: always
+    restart: unless-stopped
